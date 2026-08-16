@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6db8e0">
+<title>给珂珂宝的专属小窝 💕</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --accent:#6db8e0;--accent-deep:#3f96c7;--bg1:#e8f6ff;--bg2:#f8fdff;
+  --line:#d6eefb;--soft:#eef8ff;--txt:#4c6a7d;--muted:#8fb3c6;
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  min-height:100vh;color:var(--txt);transition:background .4s;
+}
+body[data-theme="capybara"]{
+  --accent:#d9a05f;--accent-deep:#b57f42;--bg1:#fff3e2;--bg2:#fffaf3;
+  --line:#f5ddbc;--soft:#fbefdd;--txt:#6b563f;--muted:#a98d6b;
+}
+body[data-theme="kitty"]{
+  --accent:#ff8fab;--accent-deep:#f46a8f;--bg1:#ffeef4;--bg2:#fff7f9;
+  --line:#ffdfe9;--soft:#fff0f5;--txt:#7a5563;--muted:#c08ea0;
+}
+body[data-theme="kuromi"]{
+  --accent:#a58bd6;--accent-deep:#7e5fbe;--bg1:#f2edff;--bg2:#fbf9ff;
+  --line:#e3d9f7;--soft:#f0eafa;--txt:#554a6e;--muted:#9b8fb8;
+}
+.container{max-width:520px;margin:0 auto;padding:14px 16px 110px}
+.page{display:none}
+.page.active{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.hero{display:flex;align-items:center;gap:14px;margin:4px 2px 16px}
+.hero svg{width:86px;height:86px;flex-shrink:0;filter:drop-shadow(0 4px 10px rgba(0,0,0,.08))}
+.hero h2{margin:0;font-size:23px;letter-spacing:.5px}
+.hero p{margin:5px 0 0;font-size:13px;color:var(--muted)}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px 18px;margin-bottom:14px;box-shadow:0 6px 18px rgba(140,110,130,.07)}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:700;font-size:15px}
+.bar{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-deep));border-radius:99px;transition:width .5s ease}
+
+.btn-main{background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#fff;border:0;border-radius:999px;padding:12px 24px;font-size:15px;font-weight:700;box-shadow:0 6px 16px rgba(120,110,150,.25);transition:transform .15s;width:100%}
+.btn-main:active{transform:scale(.96)}
+.btn-mini{background:var(--soft);color:var(--accent-deep);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;flex-shrink:0}
+.btn-ghost{background:#f4f1f7;color:#7a6f88;border:0;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:600}
+
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:14px}
+.city-row{display:flex;gap:8px}
+.city-row input{flex:1;min-width:0;border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:10px 16px;font-size:14px;outline:none;color:var(--txt)}
+
+.tabs{display:flex;gap:10px;margin-bottom:12px}
+.tab{flex:1;text-align:center;padding:12px 0;border-radius:16px;background:#fff;border:1px solid var(--line);font-weight:700;color:var(--muted);transition:.2s}
+.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(120,110,150,.2)}
+.date-label{font-size:14px;color:var(--muted);margin-bottom:12px;font-weight:600}
+
+.habit-item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.15s}
+.habit-item:active{transform:scale(.98)}
+.hic{font-size:26px}
+.hname{font-weight:700;font-size:15px}
+.hsub{font-size:12px;color:var(--muted);margin-top:2px}
+.hcheck{margin-left:auto;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;flex-shrink:0;transition:.2s}
+.habit-item.done{opacity:.55}
+.habit-item.done .hname{text-decoration:line-through}
+.habit-item.done .hcheck{background:linear-gradient(135deg,var(--accent),var(--accent-deep));border-color:transparent;color:#fff}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:9px 13px;font-size:12.5px}
+.chip b{color:var(--accent-deep)}
+
+.cal-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 10px;margin-bottom:12px}
+.cal-title{font-weight:800;font-size:14px;color:var(--accent-deep);margin:0 4px 8px}
+.cal-week,.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-week span{font-size:11px;color:var(--muted);text-align:center;padding:2px 0}
+.cal-cell{aspect-ratio:1/1;border:0;background:var(--soft);border-radius:9px;font-size:12px;color:var(--txt);position:relative}
+.cal-cell.period{background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#fff;font-weight:700}
+.cal-cell.today{box-shadow:inset 0 0 0 2px var(--accent-deep)}
+.section-title{font-size:16px;font-weight:800;margin:18px 2px 10px}
+
+.hist-item{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+.hist-item small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.del-btn{background:var(--soft);color:var(--accent-deep);border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-size:13px;font-weight:600}
+
+.guide-hint{text-align:center;color:var(--muted);font-size:13px;padding:16px 0 2px;letter-spacing:1px}
+.guide-card{background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:18px;padding:14px 16px;margin-bottom:10px}
+.guide-card h4{margin:0 0 8px;font-size:15px;color:var(--accent-deep)}
+.guide-card li{font-size:13.5px;line-height:1.9;margin-left:-16px;color:var(--txt)}
+
+.empty{text-align:center;color:var(--muted);padding:24px 10px;font-size:14px;line-height:1.9}
+
+.today-weather-card{display:flex;align-items:center;gap:14px}
+.tw-emoji{font-size:40px}
+.tw-temp{font-size:34px;font-weight:800;color:var(--accent-deep);line-height:1}
+.tw-desc{font-size:13px;color:var(--muted);margin-top:6px}
+.link-btn{margin-left:auto;background:var(--soft);border:1px solid var(--line);color:var(--accent-deep);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;flex-shrink:0}
+
+.big-emoji{font-size:52px;text-align:center}
+.big-temp{font-size:56px;font-weight:800;text-align:center;color:var(--accent-deep);line-height:1.1}
+.weather-desc{text-align:center;color:var(--muted);font-size:14px;margin-bottom:14px}
+.loading{text-align:center;color:var(--muted);padding:30px 10px;font-size:14px}
+.advice-card{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:10px}
+.advice-card .a-ico{font-size:22px}
+.advice-card b{display:block;font-size:14.5px;margin-bottom:4px}
+.advice-card p{margin:0;font-size:13px;line-height:1.75;white-space:pre-line;color:var(--txt)}
+
+.todo{display:flex;align-items:center;gap:9px;padding:10px 2px;border-bottom:1px dashed var(--line);font-size:14px;cursor:pointer}
+.todo:last-child{border-bottom:0}
+.todo em{margin-left:auto;font-style:normal;font-size:11.5px;color:var(--muted);font-weight:600}
+.todo.done{color:var(--muted)}
+.todo.done .tname{text-decoration:line-through}
+.todo.done em{color:var(--accent-deep)}
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:rgba(255,255,255,.93);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:60}
+.nav-btn{background:none;border:0;padding:4px 12px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;color:var(--muted);font-weight:600;transition:color .3s}
+.nav-btn .ico{font-size:21px;transition:transform .2s}
+.nav-btn.active{color:var(--accent-deep)}
+.nav-btn.active .ico{transform:scale(1.15)}
+
+.overlay{position:fixed;inset:0;background:rgba(50,40,60,.4);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.overlay.show{display:flex}
+.dialog{background:#fff;border-radius:24px;padding:24px 20px;width:100%;max-width:330px;text-align:center;border:1px solid var(--line)}
+.dialog h3{margin:0 0 16px}
+.dialog input[type=time]{font-size:30px;font-weight:800;color:var(--accent-deep);border:2px solid var(--line);border-radius:16px;padding:12px;width:70%;text-align:center;background:var(--soft);outline:none}
+.dialog-btns{display:flex;gap:10px;justify-content:center;margin-top:18px}
+.dialog-btns .btn-main{width:auto;padding:10px 26px}
+
+#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);background:rgba(70,55,75,.92);color:#fff;padding:11px 22px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:120;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body data-theme="cinnamoroll">
+
+<main class="container">
+
+  <!-- ============ 今日 · 大耳狗 ============ -->
+  <section class="page active" id="page-today">
+    <div class="hero">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="42" rx="15" ry="28" fill="#ffffff" stroke="#d6eefb" stroke-width="3" transform="rotate(-16 30 42)"/>
+        <ellipse cx="90" cy="42" rx="15" ry="28" fill="#ffffff" stroke="#d6eefb" stroke-width="3" transform="rotate(16 90 42)"/>
+        <circle cx="60" cy="66" r="33" fill="#ffffff" stroke="#d6eefb" stroke-width="3"/>
+        <ellipse cx="49" cy="64" rx="3.4" ry="5" fill="#7cc3ea"/>
+        <ellipse cx="71" cy="64" rx="3.4" ry="5" fill="#7cc3ea"/>
+        <ellipse cx="43" cy="73" rx="4.5" ry="2.6" fill="#ffd7e0" opacity=".9"/>
+        <ellipse cx="77" cy="73" rx="4.5" ry="2.6" fill="#ffd7e0" opacity=".9"/>
+        <circle cx="60" cy="73" r="4" fill="#f7b8c8"/>
+        <path d="M60 77 q3 4 0 7 q-3 -3 0 -7" fill="none" stroke="#cbb7c0" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="24" cy="20" r="4" fill="#ffffff" opacity=".9"/>
+        <circle cx="100" cy="24" r="5" fill="#ffffff" opacity=".9"/>
+        <circle cx="108" cy="60" r="3.5" fill="#ffffff" opacity=".9"/>
+      </svg>
+      <div class="hero-txt">
+    <h2 id="greeting">上午好，珂珂宝</h2>
+        <p id="date-line">8月17日 周一</p>
+      </div>
+    </div>
+
+    <div class="card today-weather-card" id="today-weather">
+      <div class="tw-emoji">🌤️</div>
+      <div>
+        <div class="tw-temp">--°</div>
+        <div class="tw-desc">正在定位天气…</div>
+      </div>
+      <button class="link-btn" data-go="weather">详情 →</button>
+    </div>
+
+    <div class="card" id="today-period">
+      <div style="font-size:14px;line-height:1.9;color:var(--txt)">🌸 正在计算下次例假…</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span>✅ 今日打卡</span><b id="today-count">0/6</b></div>
+      <div class="bar"><i id="today-bar"></i></div>
+      <div id="today-todos"></div>
+    </div>
+  </section>
+
+  <!-- ============ 天气 · 水豚噜噜 ============ -->
+  <section class="page" id="page-weather">
+    <div class="hero">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="22" r="5" fill="#ffffff" opacity=".9"/>
+        <circle cx="98" cy="30" r="4" fill="#ffffff" opacity=".9"/>
+        <ellipse cx="60" cy="66" rx="35" ry="30" fill="#c9975f" stroke="#a97943" stroke-width="3"/>
+        <ellipse cx="42" cy="38" rx="6" ry="9" fill="#b98a4f" transform="rotate(-12 42 38)"/>
+        <ellipse cx="78" cy="38" rx="6" ry="9" fill="#b98a4f" transform="rotate(12 78 38)"/>
+        <circle cx="48" cy="62" r="3.4" fill="#5b4632"/>
+        <circle cx="72" cy="62" r="3.4" fill="#5b4632"/>
+        <ellipse cx="60" cy="69" rx="5.5" ry="4" fill="#7a5b3a"/>
+        <path d="M52 78 h7 M61 78 h7" stroke="#7a5b3a" stroke-width="2.4" stroke-linecap="round"/>
+        <ellipse cx="42" cy="74" rx="4.5" ry="2.6" fill="#ffb9a0" opacity=".85"/>
+        <ellipse cx="78" cy="74" rx="4.5" ry="2.6" fill="#ffb9a0" opacity=".85"/>
+        <circle cx="60" cy="24" r="9" fill="#ffb347"/>
+        <path d="M60 15 v18 M51 24 h18 M53.6 17.6 l12.8 12.8 M66.4 17.6 l-12.8 12.8" stroke="#e8992f" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="hero-txt">
+        <h2>今天天气</h2>
+        <p>水豚噜噜帮你看天气 🌤️</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row"><span>📍 当前城市：<b id="city-name">—</b></span><button class="btn-mini" id="btn-relocate">重新定位</button></div>
+      <div class="city-row">
+        <input id="city-input" placeholder="输入城市，如：上海" enterkeyhint="search">
+        <button class="btn-mini" id="btn-city">搜索</button>
+      </div>
+    </div>
+
+    <div id="weather-main"><div class="loading">☁️ 正在获取天气…</div></div>
+  </section>
+
+  <!-- ============ 例假 · Hello Kitty ============ -->
+  <section class="page" id="page-period">
+    <div class="hero">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M28 50 L38 16 L56 44 Z" fill="#ffffff" stroke="#f3b8cc" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M92 50 L82 16 L64 44 Z" fill="#ffffff" stroke="#f3b8cc" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="60" cy="66" r="35" fill="#ffffff" stroke="#f3b8cc" stroke-width="3"/>
+        <path d="M64 34 L58 18 L78 22 Z" fill="#ef476f" stroke="#d93a63" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M74 16 L84 20 L78 30 Z" fill="#ef476f" stroke="#d93a63" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="71" cy="24" r="4.5" fill="#ffd166" stroke="#d93a63" stroke-width="2"/>
+        <ellipse cx="47" cy="65" rx="2.8" ry="3.8" fill="#3d3a3a"/>
+        <ellipse cx="73" cy="65" rx="2.8" ry="3.8" fill="#3d3a3a"/>
+        <ellipse cx="60" cy="72" rx="4" ry="2.8" fill="#ffd166"/>
+        <path d="M40 68 L20 63 M40 75 L20 76 M80 68 L100 63 M80 75 L100 76" stroke="#f3b8cc" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M24 96 q8 7 18 0" stroke="#f3b8cc" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="hero-txt">
+        <h2>例假小日历</h2>
+        <p>Hello Kitty 陪你照顾好自己 🎀</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <button class="btn-main" id="btn-today-period">📝 记录今天</button>
+      <div class="chips" id="period-stats"></div>
+    </div>
+
+    <div id="cal-grid"></div>
+
+    <div class="section-title">📜 历史记录</div>
+    <div id="period-history"></div>
+
+    <div class="guide-hint">👇 继续下滑 · 经期护理指南</div>
+    <div class="section-title">🩷 经期护理指南</div>
+
+    <div class="guide-card"><h4>🍲 饮食</h4><ul><li>多吃温热易消化的食物：姜茶、红糖水、热汤</li><li>补充含铁食物：瘦肉、菠菜、动物肝脏、红枣</li><li>少喝冷饮、咖啡，少吃生冷食物</li></ul></div>
+    <div class="guide-card"><h4>🧘 运动</h4><ul><li>可以舒缓拉伸、瑜伽、散步</li><li>避免剧烈运动、跳绳和腹部负重</li><li>感觉累就多休息，不用勉强</li></ul></div>
+    <div class="guide-card"><h4>🫧 身体</h4><ul><li>注意保暖：肚子、腰和脚踝别着凉</li><li>热水泡脚、热敷小腹可以缓解不适</li><li>保证充足睡眠，少熬夜</li></ul></div>
+    <div class="guide-card"><h4>💗 情绪</h4><ul><li>允许情绪有小波动，这是正常的</li><li>听听音乐、看看剧、抱抱热水袋放松</li><li>不开心就找我说说话，我一直在 ❤️</li></ul></div>
+    <div class="guide-card"><h4>🚫 避免</h4><ul><li>避免生冷、辛辣、油炸食物</li><li>避免剧烈运动和游泳</li><li>避免熬夜、过度劳累和情绪大起大落</li></ul></div>
+  </section>
+
+  <!-- ============ 习惯 · 库洛米 ============ -->
+  <section class="page" id="page-habits">
+    <div class="hero">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 8 L67 24 L53 24 Z" fill="#4a4458" stroke="#ff9ecb" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M60 16 Q94 18 97 50 Q99 90 60 102 Q21 90 23 50 Q26 18 60 16 Z" fill="#4a4458"/>
+        <path d="M60 16 Q94 18 97 50 Q99 90 60 102 Q21 90 23 50 Q26 18 60 16 Z" fill="none" stroke="#ff9ecb" stroke-width="4"/>
+        <ellipse cx="60" cy="66" rx="27" ry="25" fill="#ffffff"/>
+        <circle cx="60" cy="42" r="8.5" fill="#ffffff"/>
+        <circle cx="57.4" cy="41" r="1.5" fill="#4a4458"/>
+        <circle cx="62.6" cy="41" r="1.5" fill="#4a4458"/>
+        <path d="M57 46 q3 2.2 6 0" stroke="#4a4458" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="48" cy="68" rx="3.6" ry="5" fill="#2f2a3d"/>
+        <ellipse cx="72" cy="68" rx="3.6" ry="5" fill="#2f2a3d"/>
+        <path d="M54 80 q6 5 12 0" stroke="#2f2a3d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path d="M16 34 q6 -8 14 -4 M104 34 q-6 -8 -14 -4" stroke="#ff9ecb" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="26" cy="20" r="3.5" fill="#ffffff" opacity=".85"/>
+        <circle cx="100" cy="18" r="4" fill="#ffffff" opacity=".85"/>
+        <circle cx="16" cy="70" r="3" fill="#ffffff" opacity=".85"/>
+        <circle cx="108" cy="78" r="3.5" fill="#ffffff" opacity=".85"/>
+      </svg>
+      <div class="hero-txt">
+        <h2>习惯打卡</h2>
+        <p>库洛米监督你完成任务 ⭐</p>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="tab-today">今天</div>
+      <div class="tab" id="tab-tomorrow">明天</div>
+    </div>
+    <div class="date-label" id="habit-date"></div>
+    <div id="habit-list"></div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-page="today"><span class="ico">☁️</span>今日</button>
+  <button class="nav-btn" data-page="weather"><span class="ico">🌤️</span>天气</button>
+  <button class="nav-btn" data-page="period"><span class="ico">🎀</span>例假</button>
+  <button class="nav-btn" data-page="habits"><span class="ico">⭐</span>习惯</button>
+</nav>
+
+<div class="overlay" id="sleep-overlay">
+  <div class="dialog">
+    <h3>🌙 设定睡觉时间</h3>
+    <input type="time" id="sleep-input" value="23:00">
+    <div class="dialog-btns">
+      <button class="btn-main" id="sleep-confirm">确认</button>
+      <button class="btn-ghost" id="sleep-cancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ---------- 工具 ----------
+const $ = s => document.querySelector(s);
+const pad = n => String(n).padStart(2, '0');
+const fmt = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return fmt(d); };
+const diffDays = (a, b) => Math.round((parse(b) - parse(a)) / 864e5);
+const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+const fmtCN = s => { const d = parse(s); return `${d.getMonth() + 1}月${d.getDate()}日`; };
+const dateLabel = s => { const d = parse(s); return `${d.getMonth() + 1}月${d.getDate()}日 周${WEEK[d.getDay()]}`; };
+const today = () => fmt(new Date());
+
+function load(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } }
+function save(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+// ---------- 主题切换 ----------
+const THEMES = { today: 'cinnamoroll', weather: 'capybara', period: 'kitty', habits: 'kuromi' };
+const THEME_COLOR = { cinnamoroll: '#6db8e0', capybara: '#d9a05f', kitty: '#ff8fab', kuromi: '#a58bd6' };
+
+// ---------- 例假数据 ----------
+let periodDays = new Set(load('gf_period_days', []));
+function savePeriod() {
+  save('gf_period_days', [...periodDays]);
+  renderToday();
+  renderPeriod();
+}
+
+function getRuns() {
+  const ds = [...periodDays].sort();
+  const runs = [];
+  let cur = null;
+  for (const d of ds) {
+    if (cur && addDays(cur.end, 1) === d) { cur.end = d; cur.len++; }
+    else { if (cur) runs.push(cur); cur = { start: d, end: d, len: 1 }; }
+  }
+  if (cur) runs.push(cur);
+  return runs;
+}
+
+function periodStats() {
+  const runs = getRuns();
+  if (!runs.length) return { next: null, cycle: 28, dur: 5, runs };
+  const iv = [];
+  for (let i = 1; i < runs.length; i++) iv.push(diffDays(runs[i - 1].start, runs[i].start));
+  const cycle = iv.length ? Math.round(iv.reduce((a, b) => a + b, 0) / iv.length) : 28;
+  const dur = Math.max(3, Math.round(runs.reduce((a, r) => a + r.len, 0) / runs.length));
+  const next = addDays(runs[runs.length - 1].start, cycle);
+  return { next, cycle, dur, runs };
+}
+
+function currentPeriodDay() {
+  const t = today();
+  if (!periodDays.has(t)) return null;
+  const run = getRuns().find(r => parse(r.start) <= parse(t) && parse(t) <= parse(r.end));
+  return run ? diffDays(run.start, t) + 1 : null;
+}
+
+// ---------- 习惯数据 ----------
+const HABITS = [
+  { id: 'drink', name: '喝水', icon: '💧', hint: '每天 8 杯水' },
+  { id: 'fruit', name: '吃水果', icon: '🍎', hint: '补充维生素' },
+  { id: 'sleep', name: '睡觉时间', icon: '🌙', hint: '点我设定睡觉时间' },
+  { id: 'skincare', name: '护肤', icon: '🧴', hint: '早晚都要护肤哦' },
+  { id: 'words', name: '背单词', icon: '📖', hint: '每天进步一点点' },
+  { id: 'exercise', name: '运动', icon: '🏃', hint: '动一动更健康' }
+];
+
+function dayHabits(d) {
+  const h = load(`gf_habits_${d}`, {});
+  return { drink: false, fruit: false, sleep: false, skincare: false, words: false, exercise: false, sleepTime: '', ...h };
+}
+function setDayHabits(d, h) { save(`gf_habits_${d}`, h); }
+
+let habitDate = today();
+
+// ---------- 天气 ----------
+let loc = load('gf_loc', null);
+const WEATHER_CODES = {
+  0: ['晴', '☀️'], 1: ['基本晴朗', '🌤️'], 2: ['多云', '⛅'], 3: ['阴', '☁️'],
+  45: ['雾', '🌫️'], 48: ['雾凇', '🌫️'], 51: ['毛毛雨', '🌦️'], 53: ['小雨', '🌦️'],
+  55: ['小雨', '🌦️'], 61: ['小雨', '🌧️'], 63: ['中雨', '🌧️'], 65: ['大雨', '🌧️'],
+  66: ['冻雨', '🌧️'], 67: ['冻雨', '🌧️'], 71: ['小雪', '🌨️'], 73: ['中雪', '🌨️'],
+  75: ['大雪', '❄️'], 77: ['雪粒', '❄️'], 80: ['阵雨', '🌦️'], 81: ['阵雨', '🌧️'],
+  82: ['强阵雨', '⛈️'], 85: ['阵雪', '🌨️'], 86: ['强阵雪', '❄️'], 95: ['雷阵雨', '⛈️'],
+  96: ['雷阵雨伴冰雹', '⛈️'], 99: ['强雷暴', '⛈️']
+};
+
+function ensureWeather() {
+  if (!loc) initLoc();
+  else fetchWeather();
+}
+
+async function ipLocate() {
+  try {
+    const r = await fetch('https://ipwho.is/');
+    if (!r.ok) return null;
+    const j = await r.json();
+    if (j.success === false || !j.latitude || !j.longitude) return null;
+    return { name: j.city || '当前位置', lat: j.latitude, lon: j.longitude };
+  } catch (e) { return null; }
+}
+
+function useFallbackCity() {
+  loc = { name: '北京', lat: 39.9042, lon: 116.4074 };
+  save('gf_loc', loc);
+  fetchWeather();
+}
+
+function initLoc() {
+  const geoFail = async () => {
+    const ip = await ipLocate();
+    if (ip) { loc = ip; save('gf_loc', loc); fetchWeather(); }
+    else useFallbackCity();
+  };
+  if (!navigator.geolocation) { geoFail(); return; }
+  navigator.geolocation.getCurrentPosition(
+    pos => { loc = { name: '当前位置', lat: pos.coords.latitude, lon: pos.coords.longitude }; save('gf_loc', loc); fetchWeather(); },
+    () => geoFail(),
+    { timeout: 8000, maximumAge: 600000 }
+  );
+}
+
+async function fetchWeather() {
+  if (!loc) return;
+  const main = $('#weather-main');
+  if (main) main.innerHTML = '<div class="loading">☁️ 正在获取天气…</div>';
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}`
+      + `&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code`
+      + `&daily=temperature_2m_max,temperature_2m_min,uv_index_max&forecast_days=1&timezone=auto`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('bad');
+    const j = await r.json();
+    save('gf_weather', { ts: Date.now(), ...j });
+    renderWeather();
+    renderToday();
+  } catch (e) {
+    if (main) main.innerHTML = '<div class="loading">😢 天气获取失败，请检查网络后重试</div>';
+  }
+}
+
+async function changeCity() {
+  const name = $('#city-input').value.trim();
+  if (!name) return;
+  try {
+    const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1&language=zh&format=json`);
+    const j = await r.json();
+    if (j.results && j.results.length) {
+      const c = j.results[0];
+      loc = { name: c.name, lat: c.latitude, lon: c.longitude };
+      save('gf_loc', loc);
+      $('#city-input').value = '';
+      fetchWeather();
+      toast(`已切换到 ${c.name}`);
+    } else toast('没找到这个城市，换个名字试试');
+  } catch (e) { toast('城市查询失败，请检查网络'); }
+}
+
+function relocate() {
+  const geoFail = async () => {
+    const ip = await ipLocate();
+    if (ip) { loc = ip; save('gf_loc', loc); fetchWeather(); toast('已根据网络定位 📍'); }
+    else toast('无法定位，已保持当前城市');
+  };
+  if (!navigator.geolocation) { geoFail(); return; }
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      loc = { name: '当前位置', lat: pos.coords.latitude, lon: pos.coords.longitude };
+      save('gf_loc', loc);
+      fetchWeather();
+      toast('已定位到当前位置 📍');
+    },
+    () => geoFail(),
+    { timeout: 8000 }
+  );
+}
+
+// ---------- 今日页 ----------
+function renderToday() {
+  const h = new Date().getHours();
+  let greet;
+  if (h >= 5 && h < 11) greet = '上午好';
+  else if (h >= 11 && h < 18) greet = '下午好';
+  else greet = '晚上好';
+  $('#greeting').textContent = `${greet}，珂珂宝 💕`;
+  $('#date-line').textContent = dateLabel(today());
+
+  const wc = load('gf_weather', null);
+  const tw = $('#today-weather');
+  if (wc && wc.current) {
+    const c = wc.current;
+    const wd = WEATHER_CODES[c.weather_code] || ['天气', '🌤️'];
+    tw.innerHTML = `<div class="tw-emoji">${wd[1]}</div><div><div class="tw-temp">${Math.round(c.temperature_2m)}°</div><div class="tw-desc">${loc ? loc.name : '当前位置'} · ${wd[0]}</div></div><button class="link-btn" data-go="weather">详情 →</button>`;
+  } else {
+    tw.innerHTML = '<div class="tw-emoji">🌤️</div><div><div class="tw-temp">--°</div><div class="tw-desc">正在获取天气…</div></div><button class="link-btn" data-go="weather">详情 →</button>';
+  }
+
+  const ps = periodStats();
+  const cpd = currentPeriodDay();
+  const tp = $('#today-period');
+  if (cpd) {
+    tp.innerHTML = `<div style="font-size:15px;line-height:1.9"><b style="color:var(--accent-deep)">例假进行中 · 第 ${cpd} 天 💗</b><br><span style="font-size:13px;color:var(--muted)">好好休息，注意保暖，我在呢 🫂</span></div>`;
+  } else if (ps.next) {
+    const dd = diffDays(today(), ps.next);
+    tp.innerHTML = `<div style="font-size:15px;line-height:1.9"><b style="color:var(--accent-deep)">🌸 下次例假预计 ${fmtCN(ps.next)} 来</b>${dd >= 0 ? `（还有 ${dd} 天）` : ''}<br><span style="font-size:13px;color:var(--muted)">平均周期 ${ps.cycle} 天 · 记录几次后会更准哦</span></div>`;
+  } else {
+    tp.innerHTML = '<div style="font-size:14px;line-height:1.9">🌸 还没有经期记录<br><span style="font-size:13px;color:var(--muted)">去「例假」页点「记录今天」就能预测啦</span></div>';
+  }
+
+  const hb = dayHabits(today());
+  const done = HABITS.filter(x => hb[x.id]).length;
+  $('#today-count').textContent = `${done}/${HABITS.length}`;
+  $('#today-bar').style.width = `${(done / HABITS.length) * 100}%`;
+  $('#today-todos').innerHTML = HABITS.map(x => {
+    const isDone = hb[x.id];
+    const sub = x.id === 'sleep' && hb.sleepTime ? ` ${hb.sleepTime}` : '';
+    return `<div class="todo ${isDone ? 'done' : ''}" data-go="habits"><span>${x.icon}</span><span class="tname">${x.name}${sub}</span><em>${isDone ? '✓ 完成' : '待办'}</em></div>`;
+  }).join('');
+}
+
+// ---------- 天气页 ----------
+function renderWeather() {
+  const wc = load('gf_weather', null);
+  const el = $('#weather-main');
+  if (!wc || !wc.current) return;
+  const c = wc.current;
+  const d = wc.daily;
+  const wd = WEATHER_CODES[c.weather_code] || ['天气', '🌤️'];
+  const feels = Math.round(c.apparent_temperature);
+  const hum = Math.round(c.relative_humidity_2m);
+  const wind = Math.round(c.wind_speed_10m);
+  const max = Math.round(d.temperature_2m_max[0]);
+  const min = Math.round(d.temperature_2m_min[0]);
+  const uv = Math.round((d.uv_index_max && d.uv_index_max[0]) || 0);
+
+  $('#city-name').textContent = loc ? loc.name : '—';
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="big-emoji">${wd[1]}</div>
+      <div class="big-temp">${Math.round(c.temperature_2m)}°</div>
+      <div class="weather-desc">${loc ? loc.name : ''} · ${wd[0]} · 今天最高 ${max}° / 最低 ${min}°</div>
+      <div class="chips">
+        <div class="chip">🌡️ 体感 <b>${feels}°</b></div>
+        <div class="chip">💧 湿度 <b>${hum}%</b></div>
+        <div class="chip">🌬️ 风力 <b>${wind} km/h</b></div>
+      </div>
+    </div>
+    <div class="section-title">💡 贴心建议</div>
+    <div class="advice-card"><span class="a-ico">👗</span><div><b>穿衣建议</b><p>${clothingAdvice(feels)}</p></div></div>
+    <div class="advice-card"><span class="a-ico">🧴</span><div><b>护肤建议</b><p>${skincareAdvice(hum, uv)}</p></div></div>
+    <div class="advice-card"><span class="a-ico">🌡️</span><div><b>温差提醒</b><p>${diffAdvice(max, min)}</p></div></div>`;
+}
+
+function clothingAdvice(t) {
+  if (t < 0) return '❄️ 严寒：羽绒服 / 厚棉服 + 围巾手套，千万别冻着';
+  if (t < 10) return '🧥 较冷：大衣 / 厚外套 + 毛衣，注意保暖';
+  if (t < 16) return '🧣 微凉：风衣 / 夹克 + 长袖，早晚加件薄外套';
+  if (t < 22) return '👕 舒适：卫衣 / 薄外套或长袖 T 恤';
+  if (t < 28) return '👗 温暖：短袖 / 连衣裙，清爽出行';
+  return '🕶️ 炎热：清凉夏装，注意防晒补水';
+}
+
+function skincareAdvice(hum, uv) {
+  let s;
+  if (hum < 30) s = '💧 空气干燥：加强补水保湿，多喝水，用保湿面霜';
+  else if (hum < 55) s = '🧴 湿度适中：正常保湿护肤即可';
+  else if (hum < 75) s = '🌿 偏湿润：清爽型保湿，注意清洁';
+  else s = '💦 较潮湿：控油清爽，注意保持干爽';
+  if (uv >= 6) s += '\n☀️ 紫外线很强：出门涂防晒霜 / 打伞';
+  else if (uv >= 3) s += '\n🌤️ 紫外线中等：建议涂防晒';
+  return s;
+}
+
+function diffAdvice(max, min) {
+  const diff = max - min;
+  return diff >= 8
+    ? `🌡️ 早晚温差 ${diff}℃，记得及时增减衣物，预防感冒`
+    : `🌡️ 温差 ${diff}℃，整体比较平稳，穿着舒适`;
+}
+
+// ---------- 例假页 ----------
+function renderPeriod() {
+  const todayStr = today();
+  const isMarked = periodDays.has(todayStr);
+  $('#btn-today-period').textContent = isMarked ? '💗 取消今天的记录' : '📝 记录今天';
+
+  const ps = periodStats();
+  const lastRun = ps.runs.length ? ps.runs[ps.runs.length - 1] : null;
+  $('#period-stats').innerHTML = `
+    <div class="chip">平均周期 <b>${ps.cycle} 天</b></div>
+    <div class="chip">最近一次 ${lastRun ? fmtCN(lastRun.start) : '暂无'}</div>
+    <div class="chip">预计下次 <b>${ps.next ? fmtCN(ps.next) : '记录后可见'}</b></div>`;
+
+  const y = new Date().getFullYear();
+  let html = '';
+  for (let m = 1; m <= 12; m++) {
+    html += `<div class="cal-card"><div class="cal-title">${y}年${m}月</div><div class="cal-week">${['一', '二', '三', '四', '五', '六', '日'].map(x => `<span>${x}</span>`).join('')}</div><div class="cal-days">`;
+    const first = new Date(y, m - 1, 1);
+    const lead = (first.getDay() + 6) % 7;
+    for (let i = 0; i < lead; i++) html += '<span></span>';
+    const dim = new Date(y, m, 0).getDate();
+    for (let day = 1; day <= dim; day++) {
+      const ds = fmt(new Date(y, m - 1, day));
+      const cls = ['cal-cell'];
+      if (periodDays.has(ds)) cls.push('period');
+      if (ds === todayStr) cls.push('today');
+      html += `<button class="${cls.join(' ')}" data-date="${ds}">${day}</button>`;
+    }
+    html += '</div></div>';
+  }
+  $('#cal-grid').innerHTML = html;
+
+  const runs = getRuns();
+  const hist = $('#period-history');
+  if (!runs.length) {
+    hist.innerHTML = '<div class="empty">还没有历史记录<br>点上面「记录今天」就开始啦 🎀</div>';
+  } else {
+    hist.innerHTML = [...runs].reverse().map(r =>
+      `<div class="hist-item"><div><b>${fmtCN(r.start)} - ${fmtCN(r.end)}</b><small>共 ${r.len} 天</small></div><button class="del-btn" data-del="${r.start}">删除</button></div>`
+    ).join('');
+  }
+}
+
+function togglePeriod(d) {
+  if (periodDays.has(d)) periodDays.delete(d);
+  else periodDays.add(d);
+  savePeriod();
+  toast(periodDays.has(d) ? '已标记经期 ❤️' : '已取消标记');
+}
+
+// ---------- 习惯页 ----------
+function renderHabits() {
+  const isToday = habitDate === today();
+  $('#tab-today').classList.toggle('active', isToday);
+  $('#tab-tomorrow').classList.toggle('active', !isToday);
+  $('#habit-date').textContent = isToday ? `今天 · ${dateLabel(habitDate)}` : `明天 · ${dateLabel(habitDate)}`;
+  const hb = dayHabits(habitDate);
+  $('#habit-list').innerHTML = HABITS.map(x => {
+    const done = hb[x.id];
+    const sub = x.id === 'sleep' && hb.sleepTime ? `已设定 ${hb.sleepTime}` : x.hint;
+    return `<div class="habit-item ${done ? 'done' : ''}" data-id="${x.id}"><span class="hic">${x.icon}</span><div><div class="hname">${x.name}</div><div class="hsub">${sub}</div></div><span class="hcheck">✓</span></div>`;
+  }).join('');
+}
+
+function toggleHabit(id) {
+  const hb = dayHabits(habitDate);
+  if (id === 'sleep' && !hb.sleep) { openSleep(); return; }
+  if (id === 'sleep') {
+    hb.sleep = !hb.sleep;
+    if (!hb.sleep) hb.sleepTime = '';
+  } else {
+    hb[id] = !hb[id];
+  }
+  setDayHabits(habitDate, hb);
+  renderHabits();
+  if (habitDate === today()) renderToday();
+  toast(hb[id] || hb.sleep ? '完成啦 ✓' : '已取消');
+}
+
+function openSleep() {
+  const hb = dayHabits(habitDate);
+  $('#sleep-input').value = hb.sleepTime || '23:00';
+  $('#sleep-overlay').classList.add('show');
+}
+function closeSleep() { $('#sleep-overlay').classList.remove('show'); }
+
+// ---------- 页面导航 ----------
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.getElementById(`page-${p}`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === p));
+  document.body.dataset.theme = THEMES[p];
+  document.querySelector('meta[name=theme-color]').setAttribute('content', THEME_COLOR[THEMES[p]]);
+  if (p === 'today') renderToday();
+  if (p === 'weather') { renderWeather(); ensureWeather(); }
+  if (p === 'period') renderPeriod();
+  if (p === 'habits') renderHabits();
+  window.scrollTo(0, 0);
+}
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+// ---------- 事件绑定 ----------
+document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
+document.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]');
+  if (go) showPage(go.dataset.go);
+});
+
+$('#btn-today-period').addEventListener('click', () => togglePeriod(today()));
+$('#cal-grid').addEventListener('click', e => {
+  const b = e.target.closest('.cal-cell');
+  if (b) togglePeriod(b.dataset.date);
+});
+$('#period-history').addEventListener('click', e => {
+  const b = e.target.closest('.del-btn');
+  if (!b) return;
+  const run = getRuns().find(r => r.start === b.dataset.del);
+  if (!run) return;
+  let d = run.start;
+  while (d <= run.end) { periodDays.delete(d); d = addDays(d, 1); }
+  savePeriod();
+  toast('已删除该记录 🗑️');
+});
+
+$('#habit-list').addEventListener('click', e => {
+  const item = e.target.closest('.habit-item');
+  if (item) toggleHabit(item.dataset.id);
+});
+$('#tab-today').addEventListener('click', () => { habitDate = today(); renderHabits(); });
+$('#tab-tomorrow').addEventListener('click', () => { habitDate = addDays(today(), 1); renderHabits(); });
+
+$('#btn-city').addEventListener('click', changeCity);
+$('#city-input').addEventListener('keydown', e => { if (e.key === 'Enter') changeCity(); });
+$('#btn-relocate').addEventListener('click', relocate);
+
+$('#sleep-confirm').addEventListener('click', () => {
+  const hb = dayHabits(habitDate);
+  hb.sleep = true;
+  hb.sleepTime = $('#sleep-input').value || '23:00';
+  setDayHabits(habitDate, hb);
+  closeSleep();
+  renderHabits();
+  if (habitDate === today()) renderToday();
+  toast('晚安时间已记录 🌙');
+});
+$('#sleep-cancel').addEventListener('click', closeSleep);
+
+// ---------- 启动 ----------
+showPage('today');
+setTimeout(ensureWeather, 300);
+</script>
+</body>
+</html>
