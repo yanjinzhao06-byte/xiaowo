@@ -29,15 +29,29 @@ body[data-theme="kuromi"]{
   --accent:#a58bd6;--accent-deep:#7e5fbe;--bg1:#f2edff;--bg2:#fbf9ff;
   --line:#e3d9f7;--soft:#f0eafa;--txt:#554a6e;--muted:#9b8fb8;
 }
+body::before,body::after{content:'';position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+body::before{width:280px;height:280px;background:var(--accent);opacity:.12;top:-90px;right:-90px;filter:blur(20px)}
+body::after{width:240px;height:240px;background:var(--accent-deep);opacity:.09;bottom:-70px;left:-80px;filter:blur(20px)}
 .container{max-width:520px;margin:0 auto;padding:14px 16px 110px}
 .page{display:none}
 .page.active{display:block;animation:fade .3s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-.hero{display:flex;align-items:center;gap:14px;margin:4px 2px 16px}
-.hero svg{width:86px;height:86px;flex-shrink:0;filter:drop-shadow(0 4px 10px rgba(0,0,0,.08))}
-.hero h2{margin:0;font-size:23px;letter-spacing:.5px}
+.hero{display:flex;align-items:center;gap:14px;margin:4px 2px 16px;position:relative;z-index:1}
+.hero-banner{position:relative;width:100%;border-radius:26px;overflow:hidden;border:2px solid #fff;box-shadow:0 12px 30px rgba(120,110,150,.18)}
+.hero-banner img{display:block;width:100%;height:170px;object-fit:cover;object-position:center}
+.greet-pill{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px 18px;margin:-20px 14px 14px;position:relative;z-index:2;box-shadow:0 10px 24px rgba(120,110,150,.12);text-align:center}
+.greet-pill h2{margin:0;font-size:20px}
+.greet-pill p{margin:4px 0 0;font-size:12.5px;color:var(--muted);font-weight:600}
+.hero-avatar{width:110px;height:110px;border-radius:50%;overflow:hidden;flex-shrink:0;border:4px solid #fff;background:#fff;box-shadow:0 10px 26px rgba(120,110,150,.22)}
+.hero-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+.hero h2{margin:0;font-size:22px;letter-spacing:.5px}
 .hero p{margin:5px 0 0;font-size:13px;color:var(--muted)}
+.floaties{position:relative}
+.floaties span{position:absolute;opacity:.5;animation:floaty 6s ease-in-out infinite}
+.floaties span:nth-child(2){animation-delay:1.4s}
+.floaties span:nth-child(3){animation-delay:2.6s}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-12px) rotate(8deg)}}
 
 .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px 18px;margin-bottom:14px;box-shadow:0 6px 18px rgba(140,110,130,.07)}
 .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:700;font-size:15px}
@@ -117,7 +131,7 @@ body[data-theme="kuromi"]{
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:rgba(255,255,255,.93);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 6px calc(10px + env(safe-area-inset-bottom));z-index:60}
 .nav-btn{background:none;border:0;padding:4px 12px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;color:var(--muted);font-weight:600;transition:color .3s}
 .nav-btn .ico{font-size:21px;transition:transform .2s}
-.nav-btn.active{color:var(--accent-deep)}
+.nav-btn.active{color:var(--accent-deep);background:var(--soft)}
 .nav-btn.active .ico{transform:scale(1.15)}
 
 .overlay{position:fixed;inset:0;background:rgba(50,40,60,.4);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
@@ -164,24 +178,13 @@ body[data-theme="kuromi"]{
   <!-- ============ 今日 · 大耳狗 ============ -->
   <section class="page active" id="page-today">
     <div class="hero">
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="30" cy="42" rx="15" ry="28" fill="#ffffff" stroke="#d6eefb" stroke-width="3" transform="rotate(-16 30 42)"/>
-        <ellipse cx="90" cy="42" rx="15" ry="28" fill="#ffffff" stroke="#d6eefb" stroke-width="3" transform="rotate(16 90 42)"/>
-        <circle cx="60" cy="66" r="33" fill="#ffffff" stroke="#d6eefb" stroke-width="3"/>
-        <ellipse cx="49" cy="64" rx="3.4" ry="5" fill="#7cc3ea"/>
-        <ellipse cx="71" cy="64" rx="3.4" ry="5" fill="#7cc3ea"/>
-        <ellipse cx="43" cy="73" rx="4.5" ry="2.6" fill="#ffd7e0" opacity=".9"/>
-        <ellipse cx="77" cy="73" rx="4.5" ry="2.6" fill="#ffd7e0" opacity=".9"/>
-        <circle cx="60" cy="73" r="4" fill="#f7b8c8"/>
-        <path d="M60 77 q3 4 0 7 q-3 -3 0 -7" fill="none" stroke="#cbb7c0" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="24" cy="20" r="4" fill="#ffffff" opacity=".9"/>
-        <circle cx="100" cy="24" r="5" fill="#ffffff" opacity=".9"/>
-        <circle cx="108" cy="60" r="3.5" fill="#ffffff" opacity=".9"/>
-      </svg>
-      <div class="hero-txt">
-    <h2 id="greeting">上午好，珂珂宝</h2>
-        <p id="date-line">8月17日 周一</p>
+      <div class="hero-banner">
+        <img src="img/cinnamoroll.png" alt="大耳狗">
       </div>
+    </div>
+    <div class="greet-pill">
+      <h2 id="greeting">上午好，珂珂宝</h2>
+      <p id="date-line">8月17日 周一</p>
     </div>
 
     <div class="card today-weather-card" id="today-weather">
@@ -207,21 +210,7 @@ body[data-theme="kuromi"]{
   <!-- ============ 天气 · 水豚噜噜 ============ -->
   <section class="page" id="page-weather">
     <div class="hero">
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="26" cy="22" r="5" fill="#ffffff" opacity=".9"/>
-        <circle cx="98" cy="30" r="4" fill="#ffffff" opacity=".9"/>
-        <ellipse cx="60" cy="66" rx="35" ry="30" fill="#c9975f" stroke="#a97943" stroke-width="3"/>
-        <ellipse cx="42" cy="38" rx="6" ry="9" fill="#b98a4f" transform="rotate(-12 42 38)"/>
-        <ellipse cx="78" cy="38" rx="6" ry="9" fill="#b98a4f" transform="rotate(12 78 38)"/>
-        <circle cx="48" cy="62" r="3.4" fill="#5b4632"/>
-        <circle cx="72" cy="62" r="3.4" fill="#5b4632"/>
-        <ellipse cx="60" cy="69" rx="5.5" ry="4" fill="#7a5b3a"/>
-        <path d="M52 78 h7 M61 78 h7" stroke="#7a5b3a" stroke-width="2.4" stroke-linecap="round"/>
-        <ellipse cx="42" cy="74" rx="4.5" ry="2.6" fill="#ffb9a0" opacity=".85"/>
-        <ellipse cx="78" cy="74" rx="4.5" ry="2.6" fill="#ffb9a0" opacity=".85"/>
-        <circle cx="60" cy="24" r="9" fill="#ffb347"/>
-        <path d="M60 15 v18 M51 24 h18 M53.6 17.6 l12.8 12.8 M66.4 17.6 l-12.8 12.8" stroke="#e8992f" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <div class="hero-avatar"><img src="img/capybara.png" alt="水豚噜噜"></div>
       <div class="hero-txt">
         <h2>今天天气</h2>
         <p>水豚噜噜帮你看天气 🌤️</p>
@@ -242,19 +231,7 @@ body[data-theme="kuromi"]{
   <!-- ============ 例假 · Hello Kitty ============ -->
   <section class="page" id="page-period">
     <div class="hero">
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <path d="M28 50 L38 16 L56 44 Z" fill="#ffffff" stroke="#f3b8cc" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M92 50 L82 16 L64 44 Z" fill="#ffffff" stroke="#f3b8cc" stroke-width="3" stroke-linejoin="round"/>
-        <circle cx="60" cy="66" r="35" fill="#ffffff" stroke="#f3b8cc" stroke-width="3"/>
-        <path d="M64 34 L58 18 L78 22 Z" fill="#ef476f" stroke="#d93a63" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M74 16 L84 20 L78 30 Z" fill="#ef476f" stroke="#d93a63" stroke-width="2" stroke-linejoin="round"/>
-        <circle cx="71" cy="24" r="4.5" fill="#ffd166" stroke="#d93a63" stroke-width="2"/>
-        <ellipse cx="47" cy="65" rx="2.8" ry="3.8" fill="#3d3a3a"/>
-        <ellipse cx="73" cy="65" rx="2.8" ry="3.8" fill="#3d3a3a"/>
-        <ellipse cx="60" cy="72" rx="4" ry="2.8" fill="#ffd166"/>
-        <path d="M40 68 L20 63 M40 75 L20 76 M80 68 L100 63 M80 75 L100 76" stroke="#f3b8cc" stroke-width="2.4" stroke-linecap="round"/>
-        <path d="M24 96 q8 7 18 0" stroke="#f3b8cc" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      </svg>
+      <div class="hero-avatar"><img src="img/kitty.png" alt="Hello Kitty"></div>
       <div class="hero-txt">
         <h2>例假小日历</h2>
         <p>Hello Kitty 陪你照顾好自己 🎀</p>
@@ -284,24 +261,7 @@ body[data-theme="kuromi"]{
   <!-- ============ 习惯 · 库洛米 ============ -->
   <section class="page" id="page-habits">
     <div class="hero">
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <path d="M60 8 L67 24 L53 24 Z" fill="#4a4458" stroke="#ff9ecb" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M60 16 Q94 18 97 50 Q99 90 60 102 Q21 90 23 50 Q26 18 60 16 Z" fill="#4a4458"/>
-        <path d="M60 16 Q94 18 97 50 Q99 90 60 102 Q21 90 23 50 Q26 18 60 16 Z" fill="none" stroke="#ff9ecb" stroke-width="4"/>
-        <ellipse cx="60" cy="66" rx="27" ry="25" fill="#ffffff"/>
-        <circle cx="60" cy="42" r="8.5" fill="#ffffff"/>
-        <circle cx="57.4" cy="41" r="1.5" fill="#4a4458"/>
-        <circle cx="62.6" cy="41" r="1.5" fill="#4a4458"/>
-        <path d="M57 46 q3 2.2 6 0" stroke="#4a4458" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        <ellipse cx="48" cy="68" rx="3.6" ry="5" fill="#2f2a3d"/>
-        <ellipse cx="72" cy="68" rx="3.6" ry="5" fill="#2f2a3d"/>
-        <path d="M54 80 q6 5 12 0" stroke="#2f2a3d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-        <path d="M16 34 q6 -8 14 -4 M104 34 q-6 -8 -14 -4" stroke="#ff9ecb" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <circle cx="26" cy="20" r="3.5" fill="#ffffff" opacity=".85"/>
-        <circle cx="100" cy="18" r="4" fill="#ffffff" opacity=".85"/>
-        <circle cx="16" cy="70" r="3" fill="#ffffff" opacity=".85"/>
-        <circle cx="108" cy="78" r="3.5" fill="#ffffff" opacity=".85"/>
-      </svg>
+      <div class="hero-avatar"><img src="img/kuromi.png" alt="库洛米"></div>
       <div class="hero-txt">
         <h2>习惯打卡</h2>
         <p>库洛米监督你完成任务 ⭐</p>
